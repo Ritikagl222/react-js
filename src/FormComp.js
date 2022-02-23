@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button'
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+
 
 export default function ValidationTextFields(props) {
 
@@ -14,7 +13,7 @@ export default function ValidationTextFields(props) {
 
     // ID,NAME,SALARY  and other states
 
-    const [id, setId] = useState('');
+    const [id, setId] = useState();
     const [name, setName] = useState('');
     const [salary, setSalary] = useState('');
     const [errorMessageId, setErrorMessageId] = useState(null);
@@ -24,11 +23,14 @@ export default function ValidationTextFields(props) {
 
     //checkID
     let idArr = [];
-
+   
     // onchange funcitons
+  
     function onChangeId(e) {
-        setId((e.target.value).toUpperCase())
-    }
+         setId((e.target.value).toUpperCase())
+       }
+  
+
     function onChangeName(e) {
         setName((e.target.value).toUpperCase())
     }
@@ -43,6 +45,7 @@ export default function ValidationTextFields(props) {
         setErrorMessageSalary(false)
     }
 
+
     // onSubmit function
     function onSubmit() {
         //checkID
@@ -54,14 +57,17 @@ export default function ValidationTextFields(props) {
         }
         else {
             if (idArr.includes(id)) {
-                setErrorMessageId("DUPLICATE")
+                // setErrorMessageId("DUPLICATE")
                 props.alert(4)
             }
+            else if(props.edit){
+    
+            }
             else {
-
                 setErrorMessageId(true)
                 props.onSubmit(id, name, salary);
                 props.alert(2);
+                props.setEdit(null)
                 setId("");
                 setName("");
                 setSalary("");
@@ -72,10 +78,14 @@ export default function ValidationTextFields(props) {
     // onClear function 
 
     function onClear() {
-        props.clearAll()
-        props.alert(3)
-    }
-
+        if (props.employees.length == 0) {
+            props.alert(5)
+        }
+        else {
+            props.clearAll()
+            props.alert(3)
+        }
+     }
 
 
 
@@ -92,8 +102,6 @@ export default function ValidationTextFields(props) {
         >
 
             <div>
-
-
                 <TextField
                     id="outlined-error-helper-text"
                     label="Employee ID"
@@ -106,7 +114,6 @@ export default function ValidationTextFields(props) {
                 />
             </div>
             <div>
-
                 <TextField
 
                     id="outlined-error-helper-text"

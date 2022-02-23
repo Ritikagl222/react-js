@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import FormComp from "./FormComp"
 import DataComp from "./DataComp"
+import DataComp2 from "./DataComp2"
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -23,6 +24,7 @@ export default function ButtonAppBar() {
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
+
   // local storage
   let employeeArr;
   if (localStorage.getItem("emp") == null) {
@@ -35,6 +37,8 @@ export default function ButtonAppBar() {
   // state variables
   const [employees, setEmployees] = useState(employeeArr);
   const [alert, setAlert] = useState(false);
+  const [edit, setEdit] = useState(null);
+  const [editIndex, setEditIndex] = useState(null);
   //ON submit Function
   let myEmployee;
   function onSubmit(id, name, salary) {
@@ -55,18 +59,25 @@ export default function ButtonAppBar() {
   }
 
   //onEdit Function
-  function onEdit() {
+  function onEdit(employee, index) {
+    setEdit(employee)
+    setEditIndex(index)
+    console.log("EDIT CLICKED");
 
   }
 
-  // alert functions
+  // alert functions***********************
+  // alert=2 => success message
+  // alert=3 => cleared all data message
+  // alert=4 => Duplicate ID message
+  // alert=5 => No data to clear message
   function alertStatus(val) {
     setAlert(val)
-    setTimeout(()=>{setAlert(false)},1500)
+    setTimeout(() => { setAlert(false) }, 800)
   }
   // clear all
-  function clearAll(){
-       setEmployees([])
+  function clearAll() {
+    setEmployees([])
   }
   return (
     <Box sx={{ width: '100%' }}>
@@ -79,26 +90,31 @@ export default function ButtonAppBar() {
       </AppBar>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6} >
-          <Item>   {alert==2 ? <Stack sx={{ width: '100%' }} spacing={5}>
+          <Item>   {alert == 2 ? <Stack sx={{ width: '100%' }} spacing={5}>
             <Alert severity="success">
               <AlertTitle>Success</AlertTitle>
-        
+
             </Alert>
-          </Stack>:alert==3?<Stack sx={{ width: '100%' }} spacing={5}>
+          </Stack> : alert == 3 ? <Stack sx={{ width: '100%' }} spacing={5}>
             <Alert severity="info">
               <AlertTitle>Cleared All Data</AlertTitle>
-        
+
             </Alert>
-          </Stack>:alert==4?<Stack sx={{ width: '100%' }} spacing={5}>
+          </Stack> : alert == 4 ? <Stack sx={{ width: '100%' }} spacing={5}>
             <Alert severity="error">
               <AlertTitle>This ID is already being used !</AlertTitle>
-        
+
             </Alert>
-          </Stack>:""}
-            <FormComp onSubmit={onSubmit} alert={alertStatus} employees={employees} clearAll={clearAll} /></Item>
+          </Stack> : alert == 5 ? <Stack sx={{ width: '100%' }} spacing={5}>
+            <Alert severity="error">
+              <AlertTitle>No Data to Clear!</AlertTitle>
+
+            </Alert>
+          </Stack> : ""}
+            <FormComp onSubmit={onSubmit} edit={edit} setEdit={setEdit} setEmployees={setEmployees}index={editIndex} setEdit={setEdit} alert={alertStatus} employees={employees} clearAll={clearAll} /></Item>
         </Grid>
         <Grid item xs={6}>
-          <Item><DataComp employees={employees} onEdit={onEdit} onDelete={onDelete}></DataComp></Item>
+          <Item><DataComp2 employees={employees} onEdit={onEdit} onDelete={onDelete}></DataComp2></Item>
         </Grid>
 
       </Grid>
