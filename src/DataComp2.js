@@ -41,6 +41,7 @@ export default function DenseTable(props) {
       <Table sx={{ minWidth: 650}} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
+            <TableCell><strong></strong></TableCell>
             <TableCell><strong>ID</strong></TableCell>
             <TableCell ><strong>NAME</strong></TableCell>
             <TableCell ><strong>SALARY</strong></TableCell>
@@ -50,6 +51,7 @@ export default function DenseTable(props) {
         </TableHead>
 
 {rows.length==0?"NO DATA":<TableBody>
+    
         {rows.map((row) => (
         <TableRow
             key={row.name}

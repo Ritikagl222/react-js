@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import FormComp from "./FormComp"
 import DataComp from "./DataComp"
 import DataComp2 from "./DataComp2"
+import DataComp3 from "./DataComp3"
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -39,11 +40,34 @@ export default function ButtonAppBar() {
   const [alert, setAlert] = useState(false);
   const [edit, setEdit] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
+  
+  //state variables for Data COmp
+  
+  const[editId,setEditId]=useState('');
+  const[editName,setEditName]=useState('');
+  const[editSalary,setEditSalary]=useState('');
+  const[editAddress,setEditAddress]=useState('');
+  // const[editId,setEditId]=useState('');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //ON submit Function
   let myEmployee;
-  function onSubmit(id, name, salary) {
-    myEmployee = { id: id, name: name, salary: salary };
+  function onSubmit(id, name, salary,address) {
+    myEmployee = { id: id, name: name, salary: salary,address:address};
     console.log(employees);
+    console.log(address);
     setEmployees([...employees, myEmployee])
   }
 
@@ -59,10 +83,9 @@ export default function ButtonAppBar() {
   }
 
   //onEdit Function
-  function onEdit(employee, index) {
-    setEdit(employee)
-    setEditIndex(index)
+  function onEdit(e) {
     console.log("EDIT CLICKED");
+    console.log(edit,e);
 
   }
 
@@ -80,7 +103,7 @@ export default function ButtonAppBar() {
     setEmployees([])
   }
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%'}}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -89,7 +112,7 @@ export default function ButtonAppBar() {
         </Toolbar>
       </AppBar>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid item xs={6} >
+        <Grid item xs={3} >
           <Item>   {alert == 2 ? <Stack sx={{ width: '100%' }} spacing={5}>
             <Alert severity="success">
               <AlertTitle>Success</AlertTitle>
@@ -111,13 +134,14 @@ export default function ButtonAppBar() {
 
             </Alert>
           </Stack> : ""}
-            <FormComp onSubmit={onSubmit} edit={edit} setEdit={setEdit} setEmployees={setEmployees}index={editIndex} setEdit={setEdit} alert={alertStatus} employees={employees} clearAll={clearAll} /></Item>
+            <FormComp onSubmit={onSubmit}   alert={alertStatus} employees={employees} clearAll={clearAll} /></Item>
         </Grid>
-        <Grid item xs={6}>
-          <Item><DataComp2 employees={employees} onEdit={onEdit} onDelete={onDelete}></DataComp2></Item>
+        <Grid item xs={9}>
+          <Item><DataComp3 edit={edit}employees={employees} onEdit={onEdit} setEdit={setEdit} onDelete={onDelete} editId={editId} setEditId={setEditId}  setEditSalary={setEditSalary} editName={editName} setEditName={setEditName} editSalary={editSalary} setEditsalary={setEditSalary} editAddress={editAddress} setEditAddress={setEditAddress}         ></DataComp3></Item>
         </Grid>
 
       </Grid>
+
     </Box>
 
   );

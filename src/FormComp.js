@@ -19,7 +19,7 @@ export default function ValidationTextFields(props) {
     const [errorMessageId, setErrorMessageId] = useState(null);
     const [errorMessageName, setErrorMessageName] = useState(null);
     const [errorMessageSalary, setErrorMessageSalary] = useState(null);
-
+    const [address,setAddress]=useState({address:"",city:"",zip:"",state:"",phone:"",email:""});
 
     //checkID
     let idArr = [];
@@ -37,6 +37,31 @@ export default function ValidationTextFields(props) {
     function onChangeSalary(e) {
         setSalary((e.target.value).toUpperCase())
     }
+    function onChangeAddress(e) {
+        setAddress({...address,address:e.target.value})
+    }
+    function onChangeCity(e) {
+        setAddress({...address,city:e.target.value})
+
+    }
+    function onChangeZip(e) {
+        setAddress({...address,zip:e.target.value})
+
+    }
+    function onChangeState(e) {
+        setAddress({...address,state:e.target.value})
+
+    }
+    
+    function onChangePhone(e) {
+        setAddress({...address,phone:e.target.value})
+        
+    }
+    
+    function onChangeEmail(e) {
+        setAddress({...address,email:e.target.value})
+    }
+    
     //onClick functions
 
     function onClick() {
@@ -65,7 +90,8 @@ export default function ValidationTextFields(props) {
             }
             else {
                 setErrorMessageId(true)
-                props.onSubmit(id, name, salary);
+                // console.log(address)
+                props.onSubmit(id, name, salary,address);
                 props.alert(2);
                 props.setEdit(null)
                 setId("");
@@ -95,7 +121,7 @@ export default function ValidationTextFields(props) {
             alignItems and justifyContent
             component="form"
             sx={{
-                '& .MuiTextField-root': { m: 2, width: '25ch' }, margin: "auto"
+                '& .MuiTextField-root': { m: 2, width: '35ch',height:'5ch',fontSize:"6" }, margin: "auto"
             }}
             noValidate
             autoComplete="off"
@@ -138,8 +164,80 @@ export default function ValidationTextFields(props) {
                     autoComplete="off"
                 />
             </div>
+            <div>
+                <TextField
+                    id="outlined-error-helper-text"
+                    label="Phone"
+                    defaultValue={address.phone}
+                    helperText={errorMessageSalary}
+                    onChange={onChangePhone}
+                    onClick={onClick}
+                    error={errorMessageSalary}
+                    autoComplete="off"
+                />
+            </div>
+            <div>
+                <TextField
+                    id="outlined-error-helper-text"
+                    label="Email"
+                    defaultValue={address.email}
+                    helperText={errorMessageSalary}
+                    onChange={onChangeEmail}
+                    onClick={onClick}
+                    error={errorMessageSalary}
+                    autoComplete="off"
+                />
+            </div>
+            <div>
+                <TextField
+                    id="outlined-error-helper-text"
+                    label="Adress"
+                    defaultValue={address.address}
+                    helperText={errorMessageSalary}
+                    onChange={onChangeAddress}
+                    onClick={onClick}
+                    error={errorMessageSalary}
+                    autoComplete="off"
+                />
+            </div>
+            <div>
+                <TextField
+                    id="outlined-error-helper-text"
+                    label="City"
+                    defaultValue={address.city}
+                    helperText={errorMessageSalary}
+                    onChange={onChangeCity}
+                    onClick={onClick}
+                    error={errorMessageSalary}
+                    autoComplete="off"
+                />
+            </div>
+            <div>
+                <TextField
+                    id="outlined-error-helper-text"
+                    label="Zip"
+                    defaultValue={address.zip}
+                    helperText={errorMessageSalary}
+                    onChange={onChangeZip}
+                    onClick={onClick}
+                    error={errorMessageSalary}
+                    autoComplete="off"
+                />
+            </div>
+            <div>
+                <TextField
+                    id="outlined-error-helper-text"
+                    label="State"
+                    defaultValue={address.state}
+                    helperText={errorMessageSalary}
+                    onChange={onChangeState}
+                    onClick={onClick}
+                    error={errorMessageSalary}
+                    autoComplete="off"
+                />
+            </div>
 
-            <Stack ml={25} spacing={3} direction="row" >
+            <Stack mt={5} ml={8} spacing={3} direction="row" >
                 <Button
                     variant="contained"
                     onClick={onSubmit}>SUBMIT
