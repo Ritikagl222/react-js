@@ -39,35 +39,19 @@ export default function ButtonAppBar() {
   const [employees, setEmployees] = useState(employeeArr);
   const [alert, setAlert] = useState(false);
   const [edit, setEdit] = useState(null);
-  const [editIndex, setEditIndex] = useState(null);
-  
+
+
   //state variables for Data COmp
-  
-  const[editId,setEditId]=useState('');
-  const[editName,setEditName]=useState('');
-  const[editSalary,setEditSalary]=useState('');
-  const[editAddress,setEditAddress]=useState('');
-  // const[editId,setEditId]=useState('');
 
-
-
-
-
-
-
-
-
-
-
-
-
+  const [editId, setEditId] = useState('');
+  const [editName, setEditName] = useState('');
+  const [editSalary, setEditSalary] = useState('');
+  const [editAddress, setEditAddress] = useState({ address: "", city: "", zip: "", state: "", phone: "", email: "" });
 
   //ON submit Function
   let myEmployee;
-  function onSubmit(id, name, salary,address) {
-    myEmployee = { id: id, name: name, salary: salary,address:address};
-    console.log(employees);
-    console.log(address);
+  function onSubmit(id, name, salary, address) {
+    myEmployee = { id: id, name: name, salary: salary, address: address };
     setEmployees([...employees, myEmployee])
   }
 
@@ -78,15 +62,29 @@ export default function ButtonAppBar() {
 
   //ondelete Funciton
   function onDelete(id) {
-    console.log("DELETE", id)
-    setEmployees(employees.filter((e) => { return e.id != id }))
+ 
+ setEmployees(employees.filter((e) => { return e.id != id }))
   }
 
   //onEdit Function
   function onEdit(e) {
     console.log("EDIT CLICKED");
-    console.log(edit,e);
+    console.log(edit, e);
 
+  }
+  //onDone funciton
+  function onDone(id) {
+    setEdit(null)
+    const updatedEmployees = [...employees].map((e) => {
+      if (e.id == id) {
+        e = { id: editId, name: editName, salary: editSalary, address: editAddress };
+      }
+
+      return e;
+
+    })
+
+    setEmployees(updatedEmployees)
   }
 
   // alert functions***********************
@@ -94,6 +92,8 @@ export default function ButtonAppBar() {
   // alert=3 => cleared all data message
   // alert=4 => Duplicate ID message
   // alert=5 => No data to clear message
+  // alert=6 => Phone number validation message
+  // alert=7 =>Email Validation message
   function alertStatus(val) {
     setAlert(val)
     setTimeout(() => { setAlert(false) }, 800)
@@ -111,7 +111,7 @@ export default function ButtonAppBar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      <Grid container rowSpacing={1}  columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={3} >
           <Item>   {alert == 2 ? <Stack sx={{ width: '100%' }} spacing={5}>
             <Alert severity="success">
@@ -133,11 +133,21 @@ export default function ButtonAppBar() {
               <AlertTitle>No Data to Clear!</AlertTitle>
 
             </Alert>
+          </Stack> : alert == 6 ? <Stack sx={{ width: '100%' }} spacing={5}>
+            <Alert severity="error">
+              <AlertTitle>Please Check Phone Number!</AlertTitle>
+
+            </Alert>
+          </Stack> : alert == 7 ? <Stack sx={{ width: '100%' }} spacing={5}>
+            <Alert severity="error">
+              <AlertTitle>Please Check Email!</AlertTitle>
+
+            </Alert>
           </Stack> : ""}
-            <FormComp onSubmit={onSubmit}   alert={alertStatus} employees={employees} clearAll={clearAll} /></Item>
+            <FormComp  onSubmit={onSubmit} alert={alertStatus} employees={employees} clearAll={clearAll} /></Item>
         </Grid>
         <Grid item xs={9}>
-          <Item><DataComp3 edit={edit}employees={employees} onEdit={onEdit} setEdit={setEdit} onDelete={onDelete} editId={editId} setEditId={setEditId}  setEditSalary={setEditSalary} editName={editName} setEditName={setEditName} editSalary={editSalary} setEditsalary={setEditSalary} editAddress={editAddress} setEditAddress={setEditAddress}         ></DataComp3></Item>
+          <Item><DataComp3 edit={edit} employees={employees} onEdit={onEdit} setEdit={setEdit} onDelete={onDelete} onDone={onDone} editId={editId} setEditId={setEditId} setEditSalary={setEditSalary} editName={editName} setEditName={setEditName} editSalary={editSalary} setEditsalary={setEditSalary} editAddress={editAddress} setEditAddress={setEditAddress}         ></DataComp3></Item>
         </Grid>
 
       </Grid>

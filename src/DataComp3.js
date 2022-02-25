@@ -20,9 +20,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import Divider from '@mui/material/Divider';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
@@ -61,10 +58,10 @@ export default function CollapsibleTable(props) {
             {row.id}
           </TableCell>
   
-          <TableCell align="right">{row.name}</TableCell>
-          <TableCell align="right">{row.salary}</TableCell>
-          <TableCell align="right">{row.edit}</TableCell>
-          {/* <TableCell align="right">{row.protein}</TableCell> */}
+          <TableCell >{row.name}</TableCell>
+          <TableCell >{row.salary}</TableCell>
+          <TableCell >{row.edit}</TableCell>
+          {/* <TableCell >{row.protein}</TableCell> */}
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -110,7 +107,7 @@ export default function CollapsibleTable(props) {
       <ListItem>
         <ListItemAvatar>
           <Avatar>
-            <LocationOnIcon sx={{ color: "blue"}} />
+            <LocationOnIcon  />
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="City" secondary={row.address.city} />
@@ -141,23 +138,23 @@ export default function CollapsibleTable(props) {
     );
   }
   
-  Row.propTypes = {
-    row: PropTypes.shape({
-      calories: PropTypes.number.isRequired,
-      carbs: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      history: PropTypes.arrayOf(
-        PropTypes.shape({
-          amount: PropTypes.number.isRequired,
-          customerId: PropTypes.string.isRequired,
-          date: PropTypes.string.isRequired,
-        }),
-      ).isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      protein: PropTypes.number.isRequired,
-    }).isRequired,
-  };
+  // Row.propTypes = {
+  //   row: PropTypes.shape({
+  //     calories: PropTypes.number.isRequired,
+  //     carbs: PropTypes.number.isRequired,
+  //     fat: PropTypes.number.isRequired,
+  //     history: PropTypes.arrayOf(
+  //       PropTypes.shape({
+  //         amount: PropTypes.number.isRequired,
+  //         customerId: PropTypes.string.isRequired,
+  //         date: PropTypes.string.isRequired,
+  //       }),
+  //     ).isRequired,
+  //     name: PropTypes.string.isRequired,
+  //     price: PropTypes.number.isRequired,
+  //     protein: PropTypes.number.isRequired,
+  //   }).isRequired,
+  // };
   
 let editObj={
   address:<TextField defaultValue={props.editAddress.address} onChange={(e)=>props.setEditAddress({...props.editAddress,address:(e.target.value)})}></TextField>,
@@ -167,46 +164,59 @@ let editObj={
   phone:<TextField defaultValue={props.editAddress.phone} onChange={(e)=>props.setEditAddress({...props.editAddress,phone:(e.target.value)})}></TextField>,
   email:<TextField defaultValue={props.editAddress.email} onChange={(e)=>props.setEditAddress({...props.editAddress,email:(e.target.value)})}></TextField>,
 }
-
+let avgSalary;
 if(props.employees.length==0){
     rows=[];
+    avgSalary=0;
 }
 else{
+  
+ avgSalary =(props.employees.reduce((prev,initial)=>{
+  return prev+parseInt(initial.salary)
+},0))/props.employees.length
+
   rows=props.employees.map((e,i)=>{
      return( 
  createData(
-       props.edit==e.id?<TextField  defaultValue={props.editId} onChange={(e)=>{props.setEditId(e.target.value);console.log("CLICKICKICK")}}></TextField>:e.id,
-       props.edit==e.id?<TextField defaultValue={props.editName} onChange={(e)=>props.setEditName(e.target.value)}></TextField>:e.name,
-       props.edit==e.id?<TextField defaultValue={props.editSalary} onChange={(e)=>props.setEdit(e.target.value)}></TextField>:e.salary,
+       props.edit==e.id?<TextField  defaultValue={props.editId} onChange={(e)=>{props.setEditId(e.target.value);console.log("CLICKICKICK")}}></TextField>:<h4 onClick={()=>{props.setEdit(e.id);props.onEdit(e.id)}}>{e.id}</h4>,
+       props.edit==e.id?<TextField defaultValue={props.editName} onChange={(e)=>props.setEditName(e.target.value)}></TextField>:<h4 onClick={()=>{props.setEdit(e.id);props.onEdit(e.id)}}>{e.name}</h4>,
+       props.edit==e.id?<TextField defaultValue={props.editSalary} onChange={(e)=>props.setEditSalary(e.target.value)}></TextField>:<h4 onClick={()=>{props.setEdit(e.id);props.onEdit(e.id)}}>{e.salary}</h4>,
      <Stack  spacing={3} direction="row" >
-     <Button
+     {props.edit==e.id ?   <Button
+         variant="contained"
+         onClick={()=>{props.onDone(e.id)}}>DONE
+     </Button>:<Button
          variant="contained"
          onClick={()=>{props.setEdit(e.id);props.onEdit(e.id);console.log(props.edit)}}>EDIT
-     </Button>
-     <Button
+     </Button>}
+  
+    {props.edit==e.id?<Button
+         variant="outlined"
+         onClick={()=>props.setEdit(null)}
+         >CANCEL
+     </Button>:<Button
          variant="outlined"
          onClick={()=>props.onDelete(e.id)}
          >DELETE
-     </Button>
+     </Button>} 
  </Stack>,props.edit==e.id?editObj:e.address))
   })}
 
 
 
 
-
-
   return (
     <TableContainer component={Paper}>
+        <ListItem sx={{fontSize:20,borderBottom:"2px solid black"}}><strong>Average Salary</strong> : {avgSalary}</ListItem> 
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>ID</TableCell>
-            <TableCell align="right">NAME</TableCell>
-            <TableCell align="right">Salary</TableCell>
-            <TableCell align="right"></TableCell>
-            {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
+            <TableCell sx={{fontSize:25}}>ID</TableCell>
+            <TableCell sx={{fontSize:25}}>NAME</TableCell>
+            <TableCell sx={{fontSize:25}}>Salary</TableCell>
+            <TableCell sx={{fontSize:25}}></TableCell>
+            {/* <TableCell >Protein&nbsp;(g)</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>

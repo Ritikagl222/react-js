@@ -19,17 +19,23 @@ export default function ValidationTextFields(props) {
     const [errorMessageId, setErrorMessageId] = useState(null);
     const [errorMessageName, setErrorMessageName] = useState(null);
     const [errorMessageSalary, setErrorMessageSalary] = useState(null);
-    const [address,setAddress]=useState({address:"",city:"",zip:"",state:"",phone:"",email:""});
+    const [errorMessageAddress, setErrorMessageAddress] = useState(null);
+    const [errorMessageCity, setErrorMessageCity] = useState(null);
+    const [errorMessagePhone, setErrorMessagePhone] = useState(null);
+    const [errorMessageState, setErrorMessageState] = useState(null);
+    const [errorMessageEmail, setErrorMessageEmail] = useState(null);
+    const [errorMessageZip, setErrorMessageZip] = useState(null);
+    const [address, setAddress] = useState({ address: "", city: "", zip: "", state: "", phone: "", email: "" });
 
     //checkID
     let idArr = [];
-   
+
     // onchange funcitons
-  
+
     function onChangeId(e) {
-         setId((e.target.value).toUpperCase())
-       }
-  
+        setId((e.target.value).toUpperCase())
+    }
+
 
     function onChangeName(e) {
         setName((e.target.value).toUpperCase())
@@ -38,36 +44,42 @@ export default function ValidationTextFields(props) {
         setSalary((e.target.value).toUpperCase())
     }
     function onChangeAddress(e) {
-        setAddress({...address,address:e.target.value})
+        setAddress({ ...address, address: e.target.value })
     }
     function onChangeCity(e) {
-        setAddress({...address,city:e.target.value})
+        setAddress({ ...address, city: e.target.value })
 
     }
     function onChangeZip(e) {
-        setAddress({...address,zip:e.target.value})
+        setAddress({ ...address, zip: e.target.value })
 
     }
     function onChangeState(e) {
-        setAddress({...address,state:e.target.value})
+        setAddress({ ...address, state: e.target.value })
 
     }
-    
+
     function onChangePhone(e) {
-        setAddress({...address,phone:e.target.value})
-        
+        setAddress({ ...address, phone: e.target.value })
+
     }
-    
+
     function onChangeEmail(e) {
-        setAddress({...address,email:e.target.value})
+        setAddress({ ...address, email: e.target.value })
     }
-    
+
     //onClick functions
 
     function onClick() {
         setErrorMessageId(false)
         setErrorMessageName(false)
         setErrorMessageSalary(false)
+        setErrorMessageAddress(false)
+        setErrorMessageCity(false)
+        setErrorMessageState(false)
+        setErrorMessagePhone(false)
+        setErrorMessageEmail(false)
+        setErrorMessageZip(false)
     }
 
 
@@ -75,25 +87,59 @@ export default function ValidationTextFields(props) {
     function onSubmit() {
         //checkID
         employees.forEach((e) => { idArr.push(e.id) })
-        if (!id || !name || !salary) {
+        if (!id || !name || !salary || address.address == "" || address.city == "" || address.state == "" || address.phone == "" || address.zip == "" || address.email == "") {
             if (!id) { setErrorMessageId('Required') }
             if (!name) { setErrorMessageName('Required') }
             if (!salary) { setErrorMessageSalary('Required') }
+            if (!address.city) { setErrorMessageCity('Required') }
+            if (!address.state) { setErrorMessageState('Required') }
+            if (!address.phone) { setErrorMessagePhone('Required') }
+            if (!address.address) { setErrorMessageAddress('Required') }
+            if (!address.email) { setErrorMessageEmail('Required') }
+            if (!address.zip) { setErrorMessageZip('Required') }
         }
         else {
+            // DUPLICATE ID VALIDATION
             if (idArr.includes(id)) {
-                // setErrorMessageId("DUPLICATE")
-                props.alert(4)
+                setErrorMessageId("DUPLICATE")
+                // props.alert(4)
             }
-            else if(props.edit){
-    
+            // ID VALIDATION
+            else if (!(parseInt(id) >= 0)) {
+
+                setErrorMessageId("INVALID-Numbers only")
             }
+            // SALARY VALIDATION
+            else if (!(parseInt(salary) >= 0)) {
+
+                setErrorMessageSalary("INVALID-Numbers only")
+            }
+            // PHONE NUMBER VALIDATION
+            else if (!(parseInt(address.phone)>=0)) {
+                //    props.alert(6)
+                 console.log(address.phone.length)
+                setErrorMessagePhone("INVALID")
+              }
+            else if((address.phone.length<10)){
+                setErrorMessagePhone("INVALID LENGTH")
+              }
+            // EMAIL VALIDATION
+            else if (!(address.email.includes("@"))) {
+                //    props.alert(7)
+                setErrorMessageEmail("INVALID")
+            }
+            // ZIP VALIDATIN
+            else if (!(parseInt(address.zip) >= 0)) {
+
+                setErrorMessageZip("INVALID")
+            }
+            // POPULATE
             else {
                 setErrorMessageId(true)
                 // console.log(address)
-                props.onSubmit(id, name, salary,address);
+                props.onSubmit(id, name, salary, address);
                 props.alert(2);
-                props.setEdit(null)
+                console.log(address.phone.length)
                 setId("");
                 setName("");
                 setSalary("");
@@ -111,9 +157,15 @@ export default function ValidationTextFields(props) {
             props.clearAll()
             props.alert(3)
         }
-     }
+    }
 
-
+//    OnReset funciton
+    function onReset(){
+        setId("");
+        setName("");
+        setSalary("");
+        setAddress({ address: "", city: "", zip: "", state: "", phone: "", email: "" });
+    }
 
     return (
         <Box
@@ -121,7 +173,7 @@ export default function ValidationTextFields(props) {
             alignItems and justifyContent
             component="form"
             sx={{
-                '& .MuiTextField-root': { m: 2, width: '35ch',height:'5ch',fontSize:"6" }, margin: "auto"
+                '& .MuiTextField-root': { m: 2, width: '35ch', height: '7ch', fontSize: "6" }, margin: "auto"
             }}
             noValidate
             autoComplete="off"
@@ -169,10 +221,10 @@ export default function ValidationTextFields(props) {
                     id="outlined-error-helper-text"
                     label="Phone"
                     defaultValue={address.phone}
-                    helperText={errorMessageSalary}
+                    helperText={errorMessagePhone}
                     onChange={onChangePhone}
                     onClick={onClick}
-                    error={errorMessageSalary}
+                    error={errorMessagePhone}
                     autoComplete="off"
                 />
             </div>
@@ -181,10 +233,10 @@ export default function ValidationTextFields(props) {
                     id="outlined-error-helper-text"
                     label="Email"
                     defaultValue={address.email}
-                    helperText={errorMessageSalary}
+                    helperText={errorMessageEmail}
                     onChange={onChangeEmail}
                     onClick={onClick}
-                    error={errorMessageSalary}
+                    error={errorMessageEmail}
                     autoComplete="off"
                 />
             </div>
@@ -193,10 +245,10 @@ export default function ValidationTextFields(props) {
                     id="outlined-error-helper-text"
                     label="Adress"
                     defaultValue={address.address}
-                    helperText={errorMessageSalary}
+                    helperText={errorMessageAddress}
                     onChange={onChangeAddress}
                     onClick={onClick}
-                    error={errorMessageSalary}
+                    error={errorMessageAddress}
                     autoComplete="off"
                 />
             </div>
@@ -205,10 +257,10 @@ export default function ValidationTextFields(props) {
                     id="outlined-error-helper-text"
                     label="City"
                     defaultValue={address.city}
-                    helperText={errorMessageSalary}
+                    helperText={errorMessageCity}
                     onChange={onChangeCity}
                     onClick={onClick}
-                    error={errorMessageSalary}
+                    error={errorMessageCity}
                     autoComplete="off"
                 />
             </div>
@@ -217,10 +269,10 @@ export default function ValidationTextFields(props) {
                     id="outlined-error-helper-text"
                     label="Zip"
                     defaultValue={address.zip}
-                    helperText={errorMessageSalary}
+                    helperText={errorMessageZip}
                     onChange={onChangeZip}
                     onClick={onClick}
-                    error={errorMessageSalary}
+                    error={errorMessageZip}
                     autoComplete="off"
                 />
             </div>
@@ -232,7 +284,7 @@ export default function ValidationTextFields(props) {
                     helperText={errorMessageSalary}
                     onChange={onChangeState}
                     onClick={onClick}
-                    error={errorMessageSalary}
+                    error={errorMessageState}
                     autoComplete="off"
                 />
             </div>
@@ -245,6 +297,10 @@ export default function ValidationTextFields(props) {
                 <Button
                     variant="outlined"
                     onClick={onClear}>CLEAR ALL
+                </Button>
+                <Button
+                    variant="outlined"
+                    onClick={onReset}>Reset
                 </Button>
             </Stack>
         </Box>
