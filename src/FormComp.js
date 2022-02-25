@@ -126,12 +126,11 @@ export default function ValidationTextFields(props) {
             // EMAIL VALIDATION
             else if (!(address.email.includes("@"))) {
                 //    props.alert(7)
-                setErrorMessageEmail("INVALID")
+                setErrorMessageEmail("INVALID EMAIL")
             }
             // ZIP VALIDATIN
             else if (!(parseInt(address.zip) >= 0)) {
-
-                setErrorMessageZip("INVALID")
+                setErrorMessageZip("INVALID ZIP");
             }
             // POPULATE
             else {

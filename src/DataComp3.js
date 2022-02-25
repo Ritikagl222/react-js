@@ -31,7 +31,7 @@ let rows;
 export default function CollapsibleTable(props) {
 
 
-  function createData(id, name, salary,edit,address,phone,email) {
+  function createData(id, name, salary,edit,address) {
     return {
       id, name, salary,edit,address
   
@@ -155,7 +155,8 @@ export default function CollapsibleTable(props) {
   //     protein: PropTypes.number.isRequired,
   //   }).isRequired,
   // };
-  
+
+//edit adressss
 let editObj={
   address:<TextField defaultValue={props.editAddress.address} onChange={(e)=>props.setEditAddress({...props.editAddress,address:(e.target.value)})}></TextField>,
   city:<TextField defaultValue={props.editAddress.city} onChange={(e)=>props.setEditAddress({...props.editAddress,city:(e.target.value)})}></TextField>,
@@ -171,6 +172,7 @@ if(props.employees.length==0){
 }
 else{
   
+  //average salary
  avgSalary =(props.employees.reduce((prev,initial)=>{
   return prev+parseInt(initial.salary)
 },0))/props.employees.length
@@ -201,7 +203,6 @@ else{
      </Button>} 
  </Stack>,props.edit==e.id?editObj:e.address))
   })}
-
 
 
 
