@@ -7,6 +7,7 @@ import Button from '@mui/material/Button'
 
 
 export default function ValidationTextFields(props) {
+    console.log("FORM COMP RERENDER")
 
     //employees from props 
     let employees = props.employees;

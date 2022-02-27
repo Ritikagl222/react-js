@@ -20,8 +20,8 @@ export default function BasicTable(props) {
      </thead>
      <tbody>
     {props.employees.length === 0 ? 'No Data to display' :
-     props.employees.map((i) => {
-       return(<ItemComp employees={i} onEdit={props.onEdit} key={i.id}onDelete={props.onDelete}></ItemComp>)
+     props.employees.map((item) => {
+       return(<ItemComp item={item} onEdit={props.onEdit} key={item.id}onDelete={props.onDelete}  edit={props.edit} setEdit={props.setEdit} onDelete={props.onDelete} onDone={props.onDone} onEdit={props.onEdit} editId={props.editId} setEditId={props.setEditId}  editName={props.editName} setEditName={props.setEditName}  editSalary={props.editSalary} setEditSalary={props.setEditSalary}></ItemComp>)
      })};
      </tbody>
  </table>
