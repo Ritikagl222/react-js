@@ -30,7 +30,7 @@ export default function Row(props) {
   const [open, setOpen] = React.useState(false);
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' }, }}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -40,20 +40,20 @@ export default function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {props.edit == row.id ? <input value={props.editId} onChange={(e) => { props.setEditId(e.target.value) }}></input> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.id}</h4>}
+        <TableCell>
+          {props.edit == row.id ? <TextField sx={{width:"10ch"}} defaultValue={props.editId} onChange={(e) => { props.setEditId(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.id}</h4>}
         </TableCell>
 
-        <TableCell >{props.edit == row.id ? <input value={props.editName} onChange={(e) => { props.setEditName(e.target.value) }}></input> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.name}</h4>}</TableCell>
-        <TableCell >{props.edit == row.id ? <input value={props.setEditSalary} onChange={(e) => { props.setEditSalary(e.target.value) }}></input> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.salary}</h4>}</TableCell>
+        <TableCell >{props.edit == row.id ? <TextField sx={{width:"20ch"}} defaultValue={props.editName} onChange={(e) => { props.setEditName(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.name}</h4>}</TableCell>
+        <TableCell >{props.edit == row.id ? <TextField sx={{width:"15ch"}} defaultValue={props.editSalary} onChange={(e) => { props.setEditSalary(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.salary}</h4>}</TableCell>
         <TableCell >{<Stack spacing={3} direction="row" >
 
-//      {props.edit == row.id ? <Button
+       {props.edit == row.id ? <Button
             variant="contained"
             onClick={() => { props.onDone(row.id) }}>DONE
           </Button> : <Button
             variant="contained"
-            onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>EDIT
+            onClick={() => { props.setEdit(row.id); props.onEdit(row.id);props.setEditName(row.name) }}>EDIT
           </Button>}
 
           {props.edit == row.id ? <Button
@@ -81,15 +81,16 @@ export default function Row(props) {
                   fontSize: "2px",
                   maxWidth: 360,
                   bgcolor: 'background.paper',
+                 
                 }}
               >
-                <ListItem >
+                <ListItem>
                   <ListItemAvatar>
                     <Avatar>
                       <LocalPhoneIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="Phone" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.phone} onChange={(e) => props.setEditAddress({ ...props.editAddress, phone: (e.target.value) })}></TextField> : row.address.phone} />
+                  <ListItemText primary="Phone" secondary={props.edit == row.id ? <TextField  defaultValue={props.editAddress.phone} onChange={(e) => props.setEditAddress({ ...props.editAddress, phone: (e.target.value) })}></TextField> : row.address.phone} />
                 </ListItem>
                 <Divider variant="inset" component="li" />
                 <ListItem>

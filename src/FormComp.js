@@ -4,7 +4,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button'
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 export default function ValidationTextFields(props) {
     console.log("FORM COMP RERENDER")
@@ -17,6 +18,7 @@ export default function ValidationTextFields(props) {
     const [id, setId] = useState();
     const [name, setName] = useState('');
     const [salary, setSalary] = useState('');
+    const[errorMessage,setErrorMessage]=useState(null);  
     const [errorMessageId, setErrorMessageId] = useState(null);
     const [errorMessageName, setErrorMessageName] = useState(null);
     const [errorMessageSalary, setErrorMessageSalary] = useState(null);
@@ -27,6 +29,7 @@ export default function ValidationTextFields(props) {
     const [errorMessageEmail, setErrorMessageEmail] = useState(null);
     const [errorMessageZip, setErrorMessageZip] = useState(null);
     const [address, setAddress] = useState({ address: "", city: "", zip: "", state: "", phone: "", email: "" });
+    const [alert, setAlert] = useState(false);
 
     //checkID
     let idArr = [];
@@ -68,7 +71,7 @@ export default function ValidationTextFields(props) {
     function onChangeEmail(e) {
         setAddress({ ...address, email: e.target.value })
     }
-
+  
     //onClick functions
 
     function onClick() {
@@ -82,9 +85,22 @@ export default function ValidationTextFields(props) {
         setErrorMessageEmail(false)
         setErrorMessageZip(false)
     }
+    // ALERT STATUS FUNCITON
+    // alert functions***********************
+    // alert=2 => success message
+    // alert=3 => cleared all data message
+    // alert=4 => Duplicate ID message
+    // alert=5 => No data to clear message
+    // alert=6 => Phone number validation message
+    // alert=7 =>Email Validation message
 
+    function alertStatus(value) {
+        setAlert(value)
+        setTimeout(() => { setAlert(false) }, 800)
+    }
 
     // onSubmit function
+
     function onSubmit() {
         //checkID
         employees.forEach((e) => { idArr.push(e.id) })
@@ -103,46 +119,45 @@ export default function ValidationTextFields(props) {
             // DUPLICATE ID VALIDATION
             if (idArr.includes(id)) {
                 setErrorMessageId("DUPLICATE")
-                // props.alert(4)
+                alertStatus(4)
+
             }
             // ID VALIDATION
             else if (!(parseInt(id) >= 0)) {
-
-                setErrorMessageId("INVALID-Numbers only")
+                alertStatus(8);
+                setErrorMessageId("INVALID")
             }
             // SALARY VALIDATION
             else if (!(parseInt(salary) >= 0)) {
-
-                setErrorMessageSalary("INVALID-Numbers only")
+                alertStatus(9);
+                setErrorMessageSalary("INVALID")
             }
             // PHONE NUMBER VALIDATION
-            else if (!(parseInt(address.phone)>=0)) {
-                //    props.alert(6)
-                 console.log(address.phone.length)
+            else if (!(parseInt(address.phone) >= 0)) {
+                //   setAlert(6)
+                alertStatus(6);
                 setErrorMessagePhone("INVALID")
-              }
-            else if((address.phone.length<10)){
+            }
+            else if ((address.phone.length < 10)) {
+                alertStatus(6);
                 setErrorMessagePhone("INVALID LENGTH")
-              }
+            }
             // EMAIL VALIDATION
             else if (!(address.email.includes("@"))) {
-                //    props.alert(7)
+                alertStatus(7)
                 setErrorMessageEmail("INVALID EMAIL")
             }
             // ZIP VALIDATIN
             else if (!(parseInt(address.zip) >= 0)) {
-                setErrorMessageZip("INVALID ZIP");
+                alertStatus(10);
+                setErrorMessageZip("INVALID");
             }
             // POPULATE
             else {
+                 alertStatus(2);
                 setErrorMessageId(true)
-                // console.log(address)
                 props.onSubmit(id, name, salary, address);
-                props.alert(2);
-                console.log(address.phone.length)
-                setId("");
-                setName("");
-                setSalary("");
+              
             }
         }
     }
@@ -150,17 +165,20 @@ export default function ValidationTextFields(props) {
     // onClear function 
 
     function onClear() {
+        alertStatus(5)
+
         if (props.employees.length == 0) {
-            props.alert(5)
+            alertStatus(5)
         }
         else {
+            alertStatus(3)
             props.clearAll()
-            props.alert(3)
         }
     }
 
-//    OnReset funciton
-    function onReset(){
+    //    OnReset funciton
+    function onReset() {
+    
         setId("");
         setName("");
         setSalary("");
@@ -179,6 +197,12 @@ export default function ValidationTextFields(props) {
             autoComplete="off"
         >
 
+            {alert? <Stack sx={{ width: '100%' }} spacing={5}>
+                <Alert severity={alert==2?"success":alert==3?"info":"error"}>
+                    <AlertTitle>{alert==2?"Success":alert==3?"Cleared All Data":alert==4?"ID Already Exists":alert==5?"No Data to Clear":alert==6?"Invalid Phone Number":alert==7?"Invalid Email":alert==8?"ID should be a number":alert==9?"Invalid Salary":alert==10?"Invalid Zip":""}</AlertTitle>
+
+                </Alert>
+            </Stack> :""}
             <div>
                 <TextField
                     id="outlined-error-helper-text"
