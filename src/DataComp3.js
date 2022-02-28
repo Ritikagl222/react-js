@@ -87,10 +87,16 @@ function idCheckClick(e){
 setIdCheck(props.employees.filter((elem)=>elem.id!=e))
 }
 // AVERAGE SALARY
-let avgSalary=props.employees.reduce((total,prev)=>{
-  return total+ parseInt(prev.salary)
-},0)
-avgSalary=(avgSalary/props.employees.length).toFixed(2)
+let avgSalary;
+if(props.employees.length==0){
+  avgSalary=0;
+}
+else{
+  avgSalary=(props.employees.reduce((total,prev)=>{
+    return total+ parseInt(prev.salary)
+  },0))/props.employees.length.toFixed(2)
+
+}
 
   return (
     <TableContainer component={Paper}>

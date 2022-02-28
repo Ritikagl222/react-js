@@ -6,8 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import FormComp from "./FormComp"
-import DataComp from "./DataComp"
-import DataComp2 from "./DataComp2"
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DataComp3 from "./DataComp3"
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
@@ -87,8 +86,9 @@ console.log("App comp rerender")
     <Box sx={{ width: '100%'}}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            EMPLOYEE MANAGEMENT
+        <AccountCircleIcon sx={{fontSize:"80px"}}></AccountCircleIcon>
+          <Typography variant="h4" component="div" sx={{ flexGrow: 1}}>
+          <>EMPLOYEE MANAGEMENT</>
           </Typography>
         </Toolbar>
       </AppBar>
