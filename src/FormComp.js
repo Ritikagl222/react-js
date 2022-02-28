@@ -186,7 +186,7 @@ export default function ValidationTextFields(props) {
     }
 
     return (
-        <Box
+        <Box 
 
             alignItems and justifyContent
             component="form"

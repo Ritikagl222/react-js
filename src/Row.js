@@ -25,6 +25,19 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import TextField from '@mui/material/TextField';
 
 export default function Row(props) {
+  function dataClickHandler(e){
+    props.setEditName(row.name);
+    props.setEditId(row.id);
+    props.setEditSalary(row.salary);
+    props.setEditAddress({phone:row.address.phone,email:row.address.email,state:row.address.state,address:row.address.address,zip:row.address.zip,city:row.address.city})
+    props.setEdit(row.id);
+     props.onEdit(row.id)
+     props.idCheckClick(row.id)
+  }
+function onClick(){
+  props.setError({id:false,name:false,salary:false,address:false,phone:false,email:false,zip:false,state:false,city:false})
+}
+
   console.log("ROWS RENDER")
   const { row } = props;
   const [open, setOpen] = React.useState(false);
@@ -40,12 +53,9 @@ export default function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>
-          {props.edit == row.id ? <TextField sx={{width:"10ch"}} defaultValue={props.editId} onChange={(e) => { props.setEditId(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.id}</h4>}
-        </TableCell>
-
-        <TableCell >{props.edit == row.id ? <TextField sx={{width:"20ch"}} defaultValue={props.editName} onChange={(e) => { props.setEditName(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.name}</h4>}</TableCell>
-        <TableCell >{props.edit == row.id ? <TextField sx={{width:"15ch"}} defaultValue={props.editSalary} onChange={(e) => { props.setEditSalary(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.salary}</h4>}</TableCell>
+        <TableCell> {props.edit == row.id ? <TextField sx={{width:"10ch"}} defaultValue={props.editId} onChange={(e) => { props.setEditId(e.target.value) }} helperText={props.error.id} error={props.error.id} onClick={onClick}></TextField> : <h2 onClick={  dataClickHandler}>{row.id}</h2>}</TableCell>
+        <TableCell >{props.edit == row.id ? <TextField sx={{width:"20ch"}} defaultValue={props.editName} onChange={(e) => { props.setEditName(e.target.value) }}helperText={props.error.name} error={props.error.name}onClick={onClick}></TextField> : <h2 onClick={  dataClickHandler}>{row.name}</h2>}</TableCell>
+        <TableCell >{props.edit == row.id ? <TextField sx={{width:"15ch"}} defaultValue={props.editSalary} onChange={(e) => { props.setEditSalary(e.target.value) }}helperText={props.error.salary} error={props.error.salary}onClick={onClick}></TextField> : <h2 onClick={  dataClickHandler}>{row.salary}</h2>}</TableCell>
         <TableCell >{<Stack spacing={3} direction="row" >
 
        {props.edit == row.id ? <Button
@@ -53,7 +63,7 @@ export default function Row(props) {
             onClick={() => { props.onDone(row.id) }}>DONE
           </Button> : <Button
             variant="contained"
-            onClick={() => { props.setEdit(row.id); props.onEdit(row.id);props.setEditName(row.name) }}>EDIT
+            onClick={() => { props.setEdit(row.id); props.onEdit(row.id);props.setEditName(row.name);props.setEditId(row.id);props.setEditSalary(row.salary);props.setEditAddress({phone:row.address.phone,email:row.address.email,state:row.address.state,address:row.address.address,zip:row.address.zip,city:row.address.city});props.idCheckClick(row.id) }}>EDIT
           </Button>}
 
           {props.edit == row.id ? <Button
@@ -90,7 +100,7 @@ export default function Row(props) {
                       <LocalPhoneIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="Phone" secondary={props.edit == row.id ? <TextField  defaultValue={props.editAddress.phone} onChange={(e) => props.setEditAddress({ ...props.editAddress, phone: (e.target.value) })}></TextField> : row.address.phone} />
+                  <ListItemText primary="Phone" secondary={props.edit == row.id ? <TextField  defaultValue={props.editAddress.phone} onClick={onClick} onChange={(e) => props.setEditAddress({ ...props.editAddress, phone: (e.target.value) })}  helperText={props.error.phone} error={props.error.phone}  ></TextField> : <h2 onClick={  dataClickHandler}> {row.address.phone}</h2> }/>
                 </ListItem>
                 <Divider variant="inset" component="li" />
                 <ListItem>
@@ -99,7 +109,7 @@ export default function Row(props) {
                       <AlternateEmailIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="Email" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.email} onChange={(e) => props.setEditAddress({ ...props.editAddress, email: (e.target.value) })}></TextField> : row.address.email} />
+                  <ListItemText primary="Email" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.email} onClick={onClick} onChange={(e) => props.setEditAddress({ ...props.editAddress, email: (e.target.value) })} helperText={props.error.email} error={props.error.email}></TextField> :<h2 onClick={  dataClickHandler}> {row.address.email}</h2> } />
                 </ListItem>
                 <Divider variant="inset" component="li" />
                 <ListItem>
@@ -108,7 +118,7 @@ export default function Row(props) {
                       <LocationOnIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="Address" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.address} onChange={(e) => props.setEditAddress({ ...props.editAddress, address: (e.target.value) })}></TextField> : row.address.address} />
+                  <ListItemText primary="Address" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.address} onClick={onClick} onChange={(e) => props.setEditAddress({ ...props.editAddress, address: (e.target.value) })}helperText={props.error.address} error={props.error.address}></TextField> : <h2 onClick={  dataClickHandler}> {row.address.address}</h2> } />
                 </ListItem>
                 <ListItem>
                   <ListItemAvatar>
@@ -116,7 +126,7 @@ export default function Row(props) {
                       <LocationOnIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="City" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.city} onChange={(e) => props.setEditAddress({ ...props.editAddress, city: (e.target.value) })}></TextField> : row.address.city} />
+                  <ListItemText primary="City" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.city} onClick={onClick} onChange={(e) => props.setEditAddress({ ...props.editAddress, city: (e.target.value) })}helperText={props.error.city} error={props.error.city}></TextField> : <h2 onClick={  dataClickHandler}> {row.address.city}</h2> } />
                 </ListItem>
                 <ListItem>
                   <ListItemAvatar>
@@ -124,7 +134,7 @@ export default function Row(props) {
                       <LocationOnIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="State" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.state} onChange={(e) => props.setEditAddress({ ...props.editAddress, state: (e.target.value) })}></TextField> : row.address.state} />
+                  <ListItemText primary="State" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.state}onClick={onClick} onChange={(e) => props.setEditAddress({ ...props.editAddress, state: (e.target.value) })}helperText={props.error.state} error={props.error.state}></TextField> :<h2 onClick={  dataClickHandler}> {row.address.state}</h2> } />
                 </ListItem>
                 <ListItem>
                   <ListItemAvatar>
@@ -132,7 +142,7 @@ export default function Row(props) {
                       <LocationOnIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="Zip" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.zip} onChange={(e) => props.setEditAddress({ ...props.editAddress, zip: (e.target.value) })}></TextField> : row.address.zip} />
+                  <ListItemText primary="Zip" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.zip}onClick={onClick} onChange={(e) => props.setEditAddress({ ...props.editAddress, zip: (e.target.value) })}helperText={props.error.zip} error={props.error.zip}></TextField> :<h2 onClick={  dataClickHandler}> {row.address.zip}</h2> } />
                 </ListItem>
               </List>
 
