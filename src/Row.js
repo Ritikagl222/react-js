@@ -3,12 +3,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-
 import TableCell from '@mui/material/TableCell';
-
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Stack from '@mui/material/Stack';
@@ -25,7 +22,9 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import TextField from '@mui/material/TextField';
 
 export default function Row(props) {
+
   console.log("ROWS RENDER")
+ console.log(props.editAddress.email)
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   return (
@@ -41,14 +40,13 @@ export default function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {props.edit == row.id ? <input value={props.editId} onChange={(e) => { props.setEditId(e.target.value) }}></input> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.id}</h4>}
+          {props.edit == row.id ? <TextField defaultValue={props.editId} onChange={(e) => { props.setEditId(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.id}</h4>}
         </TableCell>
-
-        <TableCell >{props.edit == row.id ? <input value={props.editName} onChange={(e) => { props.setEditName(e.target.value) }}></input> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.name}</h4>}</TableCell>
-        <TableCell >{props.edit == row.id ? <input value={props.setEditSalary} onChange={(e) => { props.setEditSalary(e.target.value) }}></input> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.salary}</h4>}</TableCell>
+        <TableCell >{props.edit == row.id ? <TextField defaultValue={props.editName} onChange={(e) => { props.setEditName(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.name}</h4>}</TableCell>
+        <TableCell >{props.edit == row.id ? <TextField defaultValue={props.editSalary} onChange={(e) => { props.setEditSalary(e.target.value) }}></TextField> : <h4 onClick={() => { props.setEdit(row.id); props.onEdit(row.id) }}>{row.salary}</h4>}</TableCell>
         <TableCell >{<Stack spacing={3} direction="row" >
 
-//      {props.edit == row.id ? <Button
+         {props.edit == row.id ? <Button
             variant="contained"
             onClick={() => { props.onDone(row.id) }}>DONE
           </Button> : <Button
@@ -89,7 +87,7 @@ export default function Row(props) {
                       <LocalPhoneIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary="Phone" secondary={props.edit == row.id ? <TextField defaultValue={props.editAddress.phone} onChange={(e) => props.setEditAddress({ ...props.editAddress, phone: (e.target.value) })}></TextField> : row.address.phone} />
+                  <ListItemText primary="Phone" secondary={props.edit == row.id ? <TextField defaultValue={} onChange={(e) => props.setEditAddress({ ...props.editAddress, phone: (e.target.value) })}></TextField> : row.address.phone} />
                 </ListItem>
                 <Divider variant="inset" component="li" />
                 <ListItem>
