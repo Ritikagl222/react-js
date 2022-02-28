@@ -15,6 +15,7 @@ export default function CollapsibleTable(props) {
 
  
  console.log("DATA COMP RERENDER")
+//  state variables
   const [edit, setEdit] = useState(null);
   const [editId, setEditId] = useState('');
   const [editName, setEditName] = useState('');
